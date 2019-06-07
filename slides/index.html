@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                <section>
+                    <h1>Stream API</h1>
+                </section>
+				<section>
+                    <section>
+                        <h2>Caractéristiques</h2>
+                    </section>
+                    <section>
+                        <h3>Créé à partir de collections, tableaux, sources I/O</h3>
+                        <pre>
+                            <code class="java">
+List&ltString&gt strings = Arrays.asList("one", "two", "three");
+Stream&ltString&gt stringStream = strings.stream();
+
+String[] array = {"one", "two", "three"};
+Stream&ltString&gt stringStream = Arrays.stream(array);
+
+String fileName = "c://lines.txt";
+Stream&ltString&gt lineStream = Files.lines(Paths.get(fileName)
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Ne modifie pas les données de la source</h3>
+                        <pre>
+                            <code class="java">
+List&ltString&gt strings = Arrays.asList("one", "two", "three");
+
+List&ltString&gt modifiedStrings = strings.stream()
+                                .map(s -> "something")
+                                .Collectors.toList();
+
+System.out.println("strings : " + strings);
+//Prints [one, two, three]
+System.out.println("modifiedStrings : " + modifiedStrings);
+//Prints [something, something, something]
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Autres caractéristiques</h3>
+                        <ul>
+                            <li>Un stream charge les données de manière "lazy"</li>
+                            <li>Un stream n'est pas reutilisable</li>
+                        </ul>
+                    </section>
+				</section>
+                <section>
+                    <section>
+                        <h2>Opérations</h2>
+                    </section>
+                    <section>
+                        <h3>Intermédiaires</h3>
+                        <pre>
+                            <code class="java">
+List&ltString&gt strings = Arrays.asList("one", "two", "three");
+strings.stream()
+       .filter(s -> s.contains(""))
+       .map(s -> "another string")
+       ...
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Terminales</h3>
+                        <pre>
+                            <code class="java">
+List&ltString&gt strings = Arrays.asList("one", "two", "three");
+strings.stream()
+       ...
+       ...
+       .Collectors.toList();
+                            </code>
+                        </pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Parallélisation</h2>
+                    </section>
+                    <section>
+                        <h3>Création</h3>
+                        <pre>
+                            <code class="java">
+List&ltString&gt strings = Arrays.asList("one", "two", "three");
+
+strings.parallelStream()
+
+strings.stream()
+       ...
+       .parallel()
+
+strings.stream()
+       ...
+       .sequential()
+                            </code>
+                        </pre>
+                    </section>
+                    <section>
+                        <h3>Opérations intermédiaires</h3>
+                        <br>
+                        <h4>Stateless</h4>
+                            <pre>
+                                <code class="java">
+map(), filter(), ...
+                                </code>
+                            </pre>
+                        <h4>Stateful</h4>
+                            <pre>
+                                <code class="java">
+distinct(), sorted(), ...
+                                </code>
+                            </pre>
+                    </section>
+                </section>
+                <section>
+                    <h2>Questions?</h2>
+                </section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
